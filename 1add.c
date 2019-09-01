@@ -15,8 +15,8 @@ int main(void)
 		lsum1, lsum2, lsum);
 	__asm__ __volatile__ (
 		"ldr r0, =0xffffffff\n" /* 伪指令，编译器会将此指令转成两到三条arm汇编指令,属于编译器的属性 */
-		"adds %[sum5], %[sum1], %[sum2]\n"
-		"adc %[sum6], %[sum3], %[sum4]"
+		"adds %[sum5], %[sum1], %[sum2]\n" /* 影响进位标志位的加法 */
+		"adc %[sum6], %[sum3], %[sum4]"	/* 取进位标志位的加法：sum6=sum3 + sum4 + C */
 		:[sum5]"=&r"(sum5), [sum6]"=&r"(sum6)
 		:[sum1]"r"(sum1), [sum2]"r"(sum2), [sum3]"r"(sum3), [sum4]"r"(sum4)
 		:
