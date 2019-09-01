@@ -23,5 +23,7 @@ int main(void)
 		:
 	);
 	fprintf(stdout, "a:%d b:%d c:%d, d:%d, e:%d\n", a, b, c, d, e);
+	fprintf(stdout, "%d + %d * %d = %d\n", c, a, b, d);
+	fprintf(stdout, "%d - %d * %d = %d\n", c, a, b, e);
 	return 0;
 }

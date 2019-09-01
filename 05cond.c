@@ -27,5 +27,6 @@ int main(void)
 		:"r0"
 	);
 	fprintf(stdout, "a:%d, b:%d, c:%d\n", a, b, c);
+	fprintf(stdout, "compare %d and %d result:%d\n", a, b, c);
 	return 0;
 }

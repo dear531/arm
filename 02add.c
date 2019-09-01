@@ -4,6 +4,7 @@ int main(void)
 {
 	int sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 =0, sum6 = 0;
 	long long lsum1 = 0x8765432100000002, lsum2 = 0x12345678ffffffff;
+	long long tmp = 0;
 	long long lsum = 0;
 	sum1 = lsum1 & 0x00000000ffffffff;
 	sum2 = lsum2 & 0x00000000ffffffff;
@@ -21,13 +22,14 @@ int main(void)
 		:[sum1]"r"(sum1), [sum2]"r"(sum2), [sum3]"r"(sum3), [sum4]"r"(sum4)
 		:
 	);
-	lsum1 = sum6;
-	lsum1 = lsum1 << 32;
-	lsum = lsum1 + sum5;
+	tmp = sum6;
+	tmp = tmp << 32;
+	lsum = tmp + sum5;
 	fprintf(stdout, "lsum1:%llx\n", lsum1);
 	fprintf(stdout, "sum1:%x, sum2:%x, sum3:%x, sum4:%x, sum5:%x, sum6:%x\n", 
 	sum1, sum2, sum3, sum4, sum5, sum6);
 	fprintf(stdout, "lsum1:%llx, lsum2:%llx, lsum:%llx\n",
 		lsum1, lsum2, lsum);
+	fprintf(stdout, "%llx + %llx = %llx\n", lsum1, lsum2, lsum);
 	return 0;
 }
