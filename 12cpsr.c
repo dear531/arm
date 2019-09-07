@@ -17,7 +17,26 @@ int main(void)
 		"mrs %[cpsr], cpsr\n"
 		:[cpsr]"+&r"(cpsr)
 		:
+		:"r0"
+	);
+	fprintf(stdout, "cpsr :%x\n", cpsr);
+	/* 尝试写cpsr */
+	asm volatile(
+		"mrs %[cpsr], cpsr\n"
+		"orr %[cpsr], %[cpsr], #(1 << 7)\n"
+		"msr cpsr, %[cpsr]\n"
+		:[cpsr]"+&r"(cpsr)
 		:
+		:
+	);
+	/* 再次读cpsr看其中的内容 */
+	asm volatile (
+		"mov r0, #0\n"
+		"adds r0, r0, #0\n"
+		"mrs %[cpsr], cpsr\n"
+		:[cpsr]"+&r"(cpsr)
+		:
+		:"r0"
 	);
 	fprintf(stdout, "cpsr :%x\n", cpsr);
 	return 0;
