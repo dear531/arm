@@ -11,7 +11,10 @@ int main(void)
 	while (count--) {
 		hardware_init();
 		hardware_ops();
+		udelay(1000 * 1000);
+#if 0
 		delay(100);
+#endif
 	}
 
 	return 0;
