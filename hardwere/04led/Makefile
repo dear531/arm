@@ -17,7 +17,7 @@ all:$(TARGET)
 	$(OBJDUMP) $< > bin.s
 	$(NM) $< > System.map
 	#$(RM) $(TARGET)
-$(TARGET):src/$(TARGET)
+$(TARGET):
 	$(MAKE) -C src
 	@cp src/$(TARGET) .
 
