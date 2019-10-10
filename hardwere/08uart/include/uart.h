@@ -20,4 +20,11 @@
 void uart_init(int nu);
 void uart_send(int nu, char c);
 char uart_recv(int nu);
+void uputchar(char c);
+char ugetchar(void);
+void _uputs(char *s);
+void uputs(char *s);
+void ugets(char *buf, int len);
+void itoa(int n, char *buff);
+void uprintf(char *fmt, ...);
 #endif
