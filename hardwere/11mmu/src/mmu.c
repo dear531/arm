@@ -1,7 +1,7 @@
 #include <mmu.h>
 #include <common.h>
 
-void create_table(unsigned int *ttb)
+void section_create_table(unsigned int *ttb)
 {
 	unsigned int va = 0, pa = 0;
 	for (va = 0; va < 0x55000000; va += 0x1000000) {
@@ -24,7 +24,7 @@ void create_table(unsigned int *ttb)
 	);
 }
 
-void table_mmap(unsigned int va, unsigned int pa)
+void section_table_mmap(unsigned int va, unsigned int pa)
 {
 	unsigned int *ttb = 0;
 	asm volatile (
