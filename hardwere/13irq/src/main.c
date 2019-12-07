@@ -1,7 +1,6 @@
 #include <common.h>
 #include <hardware.h>
 #include <lib.h>
-
 void do_unde(void)
 {
 	int c = 0;
@@ -48,7 +47,8 @@ int main(void)
 		:
 	);
 	printf("main cpsr = %#010x\n", c);
-	memcpy((void *)0xffff0000, (void *)0x40008000, 0x200);
+	memcpy((void *)0xffff0000, (void*)0x40008000, 0x200);
+	printf("%s:%d\n", __func__, __LINE__);
 
 	__asm__ __volatile__ (
 		".word 0x77777777\n"
@@ -64,6 +64,6 @@ int main(void)
 		"svc 4\n"
 	);
 #endif
-
+	wdt_irq_init(4000);
 	return 0;
 }

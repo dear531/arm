@@ -14,9 +14,9 @@ _start:
 	b reset @40008000
 	ldr pc, unde @0x40008004 --bl region +/- 32M
 	ldr pc, swi @0x40008008
-	nop
-	nop
-	nop
+	nop @0x4000800c
+	nop @0x40008010
+	nop @0x40008014
 	ldr pc, irq @0x40008018
 reset:
 	push {r0-r12, lr}
@@ -27,7 +27,7 @@ reset:
 	pop {r0-r12, pc}
 unde:
 	.word unde
-	mov sp, #0x53000000
+	ldr sp, =0x52100000
 	push {r0-r12, lr}
 	bl do_unde
 	pop {r0-r12, lr}
@@ -36,7 +36,7 @@ swi:
 	.word swi
 	@uboot已经初始化过swi所在的svc模式的堆栈，不用重复初始化
 	@直接用已有的堆栈即可
-	@mov sp, #0x54000000
+	@ldr sp, =0x52110000
 	push {r0-r12, lr}
 	@APCS，ARM 过程调用标准(ARM Procedure Call Standard)
 	@r0=*(lr-4)
@@ -49,7 +49,7 @@ swi:
 	movs pc, lr
 irq:
 	.word irq
-	mov sp, #0x5400000
+	ldr sp, =0x52120000
 	push {r0-r12, lr}
 	bl do_irq
 	pop {r0-r12, lr}

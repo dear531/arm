@@ -2,15 +2,6 @@
 #include <common.h>
 typedef void (*irq_action)(void);
 irq_action ias[1024] = {0x00};
-
-#define ICCICR_CPU0 (*(volatile unsigned int *)(0x10480000 + 0x0000))
-#define ICCPMR_CPU0 (*(volatile unsigned int *)(0x10480000 + 0x0004))
-#define ICCIAR_CPU0 (*(volatile unsigned int *)(0x10480000 + 0x000C))
-#define ICCEOIR_CPU0 (*(volatile unsigned int *)(0x10480000 + 0x0010))
-#define ICDDCR (*(volatile unsigned int *)(0x10490000 + 0x0000))
-#define ICDISER1_CPU0 ((volatile unsigned int *)(0x10490000 + 0x0104))
-#define ICDIPR8_CPU0 ((volatile unsigned int *)(0x10490000 + 0x0420))
-#define ICDIPTR8_CPU0 ((volatile unsigned int *)(0x10490000 + 0x0820))
  
 /* cpu产生终端异常跳转到该函数 */
 void do_irq(void)
@@ -27,7 +18,9 @@ void do_irq(void)
 	int no = ICCIAR_CPU0;
 	/* 1.判断中断号（中断源） */
 	/* 2.去执行相应的中断处理函数 */
-	ias[no & ~0x3ff]();
+	printf("%s:%d:no:%d\n",
+		__func__, __LINE__, no & 0x3ff);
+	ias[no & 0x3ff]();
 	/* 3.清除中断 */
 	ICCEOIR_CPU0  = no;
 }
@@ -49,6 +42,7 @@ void request_irq(int no, void (*handler)(void))
 	ICDIPTR8_CPU0[(no - 32) / 4] |= 0x1 << ((no - 32) % 4) * 8;
 	/* 7.设置中断处理函数 */
 	ias[no] = handler;
+	printf("no:%d,handler:%p\n", no, handler);
 	/* 8.开启中断(I=0) */
 #if 0
 	__asm__ __volatile__ (

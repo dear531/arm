@@ -11,7 +11,7 @@ TARGET		:=arm
 BIN		:=$(TARGET).bin
 LD_ADDR		:=0x40008000
 START_OBJ	:=start.o
-OBJ		:=main.o hardware.o lib.o mmu.o swi.o irq.o
+OBJ		:=main.o hardware.o lib.o mmu.o swi.o irq.o wdt.o
 CROSS_COMPILE	:=arm-none-linux-gnueabi-
 CC		:=$(CROSS_COMPILE)gcc
 LD		:=$(CROSS_COMPILE)ld
@@ -20,7 +20,7 @@ OBJCOPY		:=$(CROSS_COMPILE)objcopy -O binary
 OBJDUMP		:=$(CROSS_COMPILE)objdump -D
 NM		:=$(CROSS_COMPILE)nm
 
-CFLAGS		:=-I../include -march=armv7-a -nostdlib
+CFLAGS		:=-I../include -march=armv7-a -nostdlib -g
 LDFLAGS		:=
 
 RM		:=rm -rf
