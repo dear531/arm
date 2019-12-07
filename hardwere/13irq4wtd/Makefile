@@ -6,7 +6,7 @@ CC		:=$(CROSS_COMPILE)gcc
 LD		:=$(CROSS_COMPILE)ld
 AS		:=$(CROSS_COMPILE)as
 OBJCOPY		:=$(CROSS_COMPILE)objcopy -O binary
-OBJDUMP		:=$(CROSS_COMPILE)objdump -D
+OBJDUMP		:=$(CROSS_COMPILE)objdump -D -S
 NM		:=$(CROSS_COMPILE)nm
 
 LDFLAGS		:=
