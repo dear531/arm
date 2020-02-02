@@ -1,0 +1,29 @@
+depmod 
+depmod: can't change directory to 'lib/modules/4.14.2.zlyuplooking.v1.1.0-g7c4cfe-dirty': No such file or directory
+mkdir -p /lib/modules/4.14.2.zlyuplooking.v1.1.0-g7c74cfe-dirty/extra
+##mkdir -p /lib/modules/`uname -r`/extra
+cp module_test?.ko /lib/modules/`uname -r`/extra
+depmod
+[@itop /root]# modprobe module_test1.ko
+[19534.878821] /home/zhangly/Arm/myroot/root/arm/kernel/04export_symbol/module
+_test2.c:module_test2_init:21
+[19534.891070] no : 0
+[19534.891624] no : 1
+[19534.893732] no : 2
+[19534.895617] no : 3
+[19534.897613] no : 4
+[19534.899610] module_test1_init:11
+[@itop /root]# lsmod 
+Module                  Size  Used by    Tainted: G  
+module_test1           16384  0 
+module_test2           16384  1 module_test1
+
+[@itop /root]# modprobe -r module_test1
+[19592.664294] module_test1_exit:18
+[19592.666599] /home/zhangly/Arm/myroot/root/arm/kernel/04export_symbol/module
+_test2.c:module_test2_exit:28
+[@itop /root]# lsmod 
+Module                  Size  Used by    Tainted: G  
+[@itop /root]# 
+
+
