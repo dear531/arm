@@ -41,14 +41,19 @@ static __exit void module_test1_exit(void)
 module_init(module_test1_init);
 module_exit(module_test1_exit);
 #if 0
-show param's permissions
-
-[root@broad 04export_symbol] # ls /sys/module/module_test3_param/parameters/ -lrt
+[root@broad 04export_symbol] # ls /sys/module/module_test3_param/parameters/ -lr
+t
 total 0
 -rw-rw-r--    1 0        0             4096 Jan  1 02:43 p
 -rw-rw-r--    1 0        0             4096 Jan  1 02:43 n
 -rw-rw-r--    1 0        0             4096 Jan  1 02:43 invb
 -rw-rw-r--    1 0        0             4096 Jan  1 02:43 a
+[root@broad 04export_symbol] # cat /sys/module/module_test3_param/parameters/*
+0,1,2
+N
+0
+(null)
+
 #endif
 module_param_named(n, no, int, 0664);
 module_param_named(p, buff, charp, 0664);
