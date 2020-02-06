@@ -1,6 +1,6 @@
 LINUX_SRC	:=/home/zhangly/Arm/itop_official/itop4412_linux_official
 
-obj-m += module_mm1.o module_mm2.o
+obj-m += module_mm1.o module_mm2.o module_mm3.o
 
 #obj-m += module1.o
 all:

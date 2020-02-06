@@ -3,7 +3,7 @@
 #include <linux/mm.h>
 #include <linux/highmem.h>
 
-/* 永久映射 */
+/* 临时映射 */
 
 static __init int mm_init(void)
 {
@@ -12,23 +12,23 @@ static __init int mm_init(void)
 	void *virtual2 = NULL;
 
 	page = alloc_pages(GFP_KERNEL | GFP_ATOMIC, 1);
-	virtual = kmap(page);
+	virtual = kmap_atomic(page);
 	memcpy(virtual, "123", 4);
 	printk("%p,%s\n", virtual, (char*)virtual);
-	kunmap(page);
+	__kunmap_atomic(page);
 
-	virtual2 = kmap(page+1);
+	virtual2 = kmap_atomic(page+1);
 	memcpy(virtual2, "456", 4);
 	printk("%p,%s\n", virtual2, (char*)virtual2);
-	kunmap(page);
+	__kunmap_atomic(page);
 	__free_pages(page, 1);
 
 	page = NULL;
 	page = alloc_page(GFP_KERNEL | GFP_ATOMIC);
-	virtual = kmap(page);
+	virtual = kmap_atomic(page);
 	memcpy(virtual, "abc", 4);
 	printk("%p,%s\n", virtual, (char*)virtual);
-	kunmap(page);
+	__kunmap_atomic(page);
 	__free_page(page);
 
 	page = NULL;
