@@ -1,0 +1,10 @@
+arm board
+
+[root@broad 05mm] # insmod module_mm6.ko 
+[root@broad 05mm] # cat /proc/slabinfo > 1.txt
+[root@broad 05mm] # rmmod module_mm6
+[root@broad 05mm] # cat /proc/slabinfo > 2.txt
+
+linux local
+zhangly@u12:05mm$ vim 1.txt 2.txt -d
+
