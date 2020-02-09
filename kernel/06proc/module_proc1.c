@@ -5,6 +5,21 @@
 #include <linux/seq_file.h>
 #include <linux/uaccess.h>
 
+#if 0
+[root@broad 06proc] # insmod module_proc1.ko 
+[root@broad 06proc] # cat /proc/uplooking/devices 
+This show func:proc_dir_show:15:
+[root@broad 06proc] # echo 1 > /proc/uplooking/devices 
+[23435.420317] len:2, n:0, data:1
+[23435.420317] 
+[root@broad 06proc] # cat /proc/uplooking/devices 
+This show func:proc_dir_show:15:1
+
+[root@broad 06proc] # rmmod module_proc1
+[root@broad 06proc] # 
+
+#endif
+
 struct proc_dir_entry *dir = NULL;
 char data[PAGE_SIZE] = {0};
 #if 1
@@ -27,7 +42,10 @@ ssize_t  dir_write(struct file *seq, const char __user *data1, size_t len, loff_
 
 static int dir_devices_proc_open(struct inode *inode, struct file *file)
 {
-        return single_open(file, proc_dir_show, NULL);
+#if 0
+int single_open_size(struct file *file, int (*show)(struct seq_file *, void *),
+#endif
+	return single_open(file, proc_dir_show, data);
 }
 
 static const struct file_operations proc_dir = {
