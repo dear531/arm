@@ -10,13 +10,15 @@ int main(void)
 {
 	int fd = -1;
 	char buff[1024] = {0};
+	int ret = 0;
 
 	fd = open(DEV_FILE, O_RDWR);
 	if (0 > fd) {
 		exit(EXIT_FAILURE);
 	}
 	write(fd, "123", 3);
-	read(fd, buff, sizeof(buff));
+	ret = read(fd, buff, sizeof(buff));
+	write(1, buff, ret);
 	ioctl(fd, 1, 1);
 	close(fd);
 	return 0;
