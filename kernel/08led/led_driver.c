@@ -35,21 +35,22 @@ struct led_st *led;
 #endif
 void exynos4_led_init(struct led_st *l)
 {
-	*(unsigned int*)(l->v + GPL2CON) &= 0xfffffff0;
-	*(unsigned int*)(l->v + GPL2CON) |= 0x00000001;
-	*(unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
-	*(unsigned int*)(l->v + GPK1CON) &= 0xffffff0f;
-	*(unsigned int*)(l->v + GPK1CON) |= 0x00000010;
-	*(unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
+	
+	*(volatile unsigned int*)(l->v + GPL2CON) &= 0xfffffff0;
+	*(volatile unsigned int*)(l->v + GPL2CON) |= 0x00000001;
+	*(volatile unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
+	*(volatile unsigned int*)(l->v + GPK1CON) &= 0xffffff0f;
+	*(volatile unsigned int*)(l->v + GPK1CON) |= 0x00000010;
+	*(volatile unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
 
 }
 
 void exynods4_led_exit(struct led_st *l)
 {
-	*(unsigned int*)(l->v + GPL2CON) &= 0xfffffff0;
-	*(unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
-	*(unsigned int*)(l->v + GPK1CON) &= 0xffffff0f;
-	*(unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
+	*(volatile unsigned int*)(l->v + GPL2CON) &= 0xfffffff0;
+	*(volatile unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
+	*(volatile unsigned int*)(l->v + GPK1CON) &= 0xffffff0f;
+	*(volatile unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
 }
 
 void exynos4_led_on(struct led_st *l, int no)
@@ -57,10 +58,10 @@ void exynos4_led_on(struct led_st *l, int no)
 	switch (no)
 	{
 		case 0:
-			*(unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
+			*(volatile unsigned int*)(l->v + GPL2DAT) |= (1 << 0);
 			break;
 		case 1:
-			*(unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
+			*(volatile unsigned int*)(l->v + GPK1DAT) |= (1 << 1);
 			break;
 		default:
 			;
@@ -74,10 +75,10 @@ void exynos4_led_off(struct led_st *l, int no)
 	switch (no)
 	{
 		case 0:
-			*(unsigned int*)(l->v + GPL2DAT) &= ~(1 << 0);
+			*(volatile unsigned int*)(l->v + GPL2DAT) &= ~(1 << 0);
 			break;
 		case 1:
-			*(unsigned int*)(l->v + GPK1DAT) &= ~(1 << 1);
+			*(volatile unsigned int*)(l->v + GPK1DAT) &= ~(1 << 1);
 			break;
 		default:
 			;

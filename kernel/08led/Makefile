@@ -9,5 +9,5 @@ kernel:
 clean:
 	$(MAKE)	 -C $(LINUX_SRC) M=$(shell pwd) modules clean
 	-rm -rf a.out
-a.out:
-	arm-none-linux-gnueabi-gcc led_app.c
+a.out:led_app.c
+	arm-none-linux-gnueabi-gcc $^ -o $@

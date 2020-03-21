@@ -31,5 +31,6 @@ int main(void)
 	fprintf(stdout, "%d\n", lps.status);
 	ioctl(fd, 0, 0);
 	close(fd);
+
 	return 0;
 }
