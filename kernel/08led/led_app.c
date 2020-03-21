@@ -29,7 +29,11 @@ int main(void)
 	write(fd, &lps, sizeof(lps));
 	ret = read(fd, lps, sizeof(lps));
 	fprintf(stdout, "%d\n", lps.status);
+#if 0 /* light on */
 	ioctl(fd, 0, 0);
+#else /* light off */
+	ioctl(fd, 1, 0);
+#endif
 	close(fd);
 
 	return 0;
