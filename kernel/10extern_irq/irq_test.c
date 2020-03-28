@@ -16,6 +16,7 @@
 #endif
 
 int irq = 0;
+int data1 = 0, data2 = 1;
 #if 0
 typedef irqreturn_t (*irq_handler_t)(int, void *);
 #endif
@@ -46,10 +47,20 @@ handler,
 *name, void *dev);
 #endif
 	/* request irq */
-	ret = request_irq(irq, irq_handler, IRQF_TRIGGER_FALLING, "my_irq", NULL);
+	ret = request_irq(irq, irq_handler,
+		IRQF_TRIGGER_FALLING | IRQF_SHARED, "my_irq",
+		&data1);
 	if (ret) {
 		goto err;
 	}
+
+	ret = request_irq(irq, irq_handler,
+		IRQF_TRIGGER_FALLING |
+		IRQF_SHARED, "my_irq", &data2);
+	if (ret) {
+		goto err;
+	}
+
 	return 0;
 err:
 	return ret;
@@ -58,7 +69,8 @@ err:
 static __exit void irq_test_exit(void)
 {
 	/* free irq */
-	free_irq(irq, NULL);
+	free_irq(irq, &data2);
+	free_irq(irq, &data1);
 }
 
 module_init(irq_test_init);
