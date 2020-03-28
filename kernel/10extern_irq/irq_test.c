@@ -58,7 +58,7 @@ err:
 static __exit void irq_test_exit(void)
 {
 	/* free irq */
-	free_irq(irq, irq_handler);
+	free_irq(irq, NULL);
 }
 
 module_init(irq_test_init);
