@@ -28,15 +28,18 @@ irqreturn_t irq_handler(int irq, void *data)
 	/* success */
 	IRQ_HANDLED		= (1 << 0),
 #endif
+	printk("irq %d\n", irq);
 	return IRQ_HANDLED;
 }
 
 static __init int irq_test_init(void)
 {
 	int ret = 0;
-	irq = gpio_to_irq(2);
 #if 0
-	irq = gpio_to_irq(S3C2410_GPF(2));
+	irq = gpio_to_irq(2);
+#else
+	irq = gpio_to_irq(EXYNOS4_GPX1(0));
+	printk("irq:%d\n", irq);
 #endif
 #if 0
 extern int __must_check
@@ -53,13 +56,14 @@ handler,
 	if (ret) {
 		goto err;
 	}
-
+#if 0
 	ret = request_irq(irq, irq_handler,
 		IRQF_TRIGGER_FALLING |
 		IRQF_SHARED, "my_irq", &data2);
 	if (ret) {
 		goto err;
 	}
+#endif
 
 	return 0;
 err:
@@ -69,7 +73,9 @@ err:
 static __exit void irq_test_exit(void)
 {
 	/* free irq */
+#if 0
 	free_irq(irq, &data2);
+#endif
 	free_irq(irq, &data1);
 }
 
