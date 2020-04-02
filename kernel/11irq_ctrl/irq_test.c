@@ -64,7 +64,7 @@ handler,
 	if (ret) {
 		goto err;
 	}
-#if 0
+#if 1
 #if 1
 	local_irq_disable();
 #else
@@ -72,7 +72,7 @@ handler,
 #endif
 #endif
 	mdelay(50000);
-#if 0
+#if 1
 #if 1
 	local_irq_enable();
 #else
