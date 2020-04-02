@@ -39,7 +39,8 @@ static __init int irq_test_init(void)
 	int ret = 0;
 	unsigned long flag = 0;
 #if 1
-	irq = gpio_to_irq(EXYNOS4_GPX1(0));
+	/* HOME key */
+	irq = gpio_to_irq(EXYNOS4_GPX1(1));
 #endif
 #if 0
 extern int __must_check
@@ -64,15 +65,19 @@ handler,
 		goto err;
 	}
 #if 0
+#if 1
 	local_irq_disable();
 #else
 	local_irq_save(flag);
 #endif
+#endif
 	mdelay(50000);
 #if 0
+#if 1
 	local_irq_enable();
 #else
 	local_irq_restore(flag);
+#endif
 #endif
 
 	return 0;
