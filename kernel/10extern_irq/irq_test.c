@@ -38,7 +38,8 @@ static __init int irq_test_init(void)
 #if 0
 	irq = gpio_to_irq(2);
 #else
-	irq = gpio_to_irq(EXYNOS4_GPX1(0));
+	/* HOME */
+	irq = gpio_to_irq(EXYNOS4_GPX1(1));
 	printk("irq:%d\n", irq);
 #endif
 #if 0
