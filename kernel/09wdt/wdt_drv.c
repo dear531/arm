@@ -10,11 +10,11 @@
 #include <linux/spinlock.h>
 
 #if 1
-#define WDT_BASE 0x10060000
-#define WTCON		(*(volatile unsigned int *)(WDT_BASE + 0x0000))
-#define WTDAT		(*(volatile unsigned int *)(WDT_BASE + 0x0004))
-#define WTCNT		(*(volatile unsigned int *)(WDT_BASE + 0x0008))
-#define WTCLRINT	(*(volatile unsigned int *)(WDT_BASE + 0x000C))
+#define WDT_BASE	0x10060000
+#define WTCON		0x0000
+#define WTDAT		0x0004
+#define WTCNT		0x0008
+#define WTCLRINT	0x000C
 #endif
 
 struct wdt_st {
@@ -194,17 +194,23 @@ int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const ch
 	if (0 > ret) {
 		goto cdev_add_error;
 	}
-
+	printk("finished cdev_add\n");
+#if 1
 	wdt->v = ioremap(WDT_BASE, SZ_4K);
 	if (NULL == wdt->v) {
 		ret = -ENOMEM;
+		printk("ioremap error\n");
 		goto ioremap_error;
 	}
+	printk("wdt->v:%p\n", wdt->v);
+#endif
 #if 1
 	wdt->clk = clk_get(NULL, "watchdog");
 
 	if (IS_ERR(wdt->clk)) {
+#if 0
                 dev_err(NULL, "failed to find watchdog clock source\n");
+#endif
                 ret = PTR_ERR(wdt->clk);
 		goto clk_get_error; 
 	}

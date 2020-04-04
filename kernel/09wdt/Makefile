@@ -1,4 +1,4 @@
-LINUX_SRC	:=/home/zhangly/Arm/itop_official/itop4412_linux_official
+LINUX_SRC :=/home/zhangly/Arm/topeet/iTop4412_Kernel_3.0
 
 obj-m += wdt_drv.o
 
