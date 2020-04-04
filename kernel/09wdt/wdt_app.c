@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <sched.h>
 
-#define DEV_FILE "/dev/test/wdt"
+#define DEV_FILE "/dev/test/mywdt"
 
 struct wdt_feed_st {
 	int time;
@@ -22,6 +22,9 @@ int main(void)
 
 	fd = open(DEV_FILE, O_RDWR);
 	if (0 > fd) {
+		fprintf(stderr,
+			"%s:%d %m\n",
+			__FILE__, __LINE__);
 		exit(EXIT_FAILURE);
 	}
 
