@@ -187,6 +187,7 @@ static __exit void irq_test_exit(void)
 #if 0
 	free_irq(irq, &data2);
 #endif
+	flush_scheduled_work();
 	free_irq(irq, &data1);
 }
 
