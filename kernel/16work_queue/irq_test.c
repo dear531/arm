@@ -16,7 +16,9 @@
 struct tasklet_struct ts1 = {}, ts2 = {};
 struct work_struct work = {};
 struct delayed_work dwork = {};
-
+#if 1
+struct workqueue_struct *wq = NULL;
+#endif
 #if 0
 #define S3C2410_GPFxx(_nr) S3C2410_GPF(_nr)
 #endif
@@ -104,6 +106,7 @@ void irq_bh(struct softirq_action *action)
 
 irqreturn_t button0_irq_handle(int irq, void *data)
 {
+	int ret = 0;
 
 	/* 需要立即处理的，在中断处理函数上半部分中执行
 	 * 可以延迟的放在中断下半部分执行
@@ -124,9 +127,25 @@ irqreturn_t button0_irq_handle(int irq, void *data)
 
 	INIT_WORK(&work, work_handler);
 	INIT_DELAYED_WORK(&dwork, dwork_handler);
-
+#if 0
 	schedule_work(&work);
 	schedule_delayed_work(&dwork, HZ*3);
+#else
+#if 0
+int queue_work(struct workqueue_struct *wq, struct work_struct *work)
+#endif
+	ret = queue_work(wq, &work);
+	if (!ret) {
+		printk("queue_work error\n");
+	}
+#if 0
+int queue_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork, unsigned long delay)
+#endif
+	ret = queue_delayed_work(wq, &dwork, HZ*3);
+	if (!ret) {
+		printk("queue_delayed_work error\n");
+	}
+#endif
 
 	prink_interrupt_process_content(__func__);
 
@@ -136,12 +155,18 @@ irqreturn_t button0_irq_handle(int irq, void *data)
 static __init int irq_test_init(void)
 {
 	int ret = 0;
+#if 1
+	/* 创建自己的队列 */
+	wq = create_workqueue("myqueue");
+#endif
+
 #if 0
 static inline void tasklet_init
 (struct tasklet_struct *tasklet,
 void (*func)(unsigned long),
 unsigned long data)
 #endif
+
 	tasklet_init(&ts1, tasklet_isr1, 123);
 	tasklet_init(&ts2, tasklet_isr2, 123);
 #if 0
@@ -187,7 +212,13 @@ static __exit void irq_test_exit(void)
 #if 0
 	free_irq(irq, &data2);
 #endif
+#if 0
 	flush_scheduled_work();
+#else
+	flush_workqueue(wq);
+	destroy_workqueue(wq);
+	wq = NULL;
+#endif
 	free_irq(irq, &data1);
 }
 
