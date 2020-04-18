@@ -1,0 +1,1 @@
+add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/17block_noblock/cdev_test2.ko 0xbf000000 -s .bss 0xbf0004e0 -s .data 0xbf00034c -s .symtab 0xbf002168
