@@ -1,0 +1,16 @@
+add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/20poll/cdev_test2.ko 0xbf000000 -s .bss 0xbf000568 -s .data 0xbf0003d4 -s .symtab 0xbf0021a4
+#!/bin/bash
+array0=".text"
+array1=".bss"
+array2=".data"
+array3=".symtab"
+
+path="/sys/module/cdev_test2/sections/"
+
+a1=`cat "$path/$array0"`
+a2=`cat "$path/$array1"`
+a3=`cat "$path/$array2"`
+a4=`cat "$path/$array3"`
+
+echo "add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/20poll/cdev_test2.ko $a1 -s .bss $a2 -s .data $a3 -s .symtab $a4"
+add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/20poll/cdev_test2.ko 0xbf000000 -s .bss 0xbf0005e4 -s .data 0xbf000450 -s .symtab 0xbf0021a4
