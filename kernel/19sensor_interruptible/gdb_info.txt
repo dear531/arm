@@ -12,4 +12,4 @@ a2=`cat "$path/$array1"`
 a3=`cat "$path/$array2"`
 a4=`cat "$path/$array3"`
 
-echo "add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/18sensor/cdev_test2.ko $a1 -s .bss $a2 -s .data $a3 -s .symtab $a4"
+echo "add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/19sensor_interruptible/cdev_test2.ko $a1 -s .bss $a2 -s .data $a3 -s .symtab $a4"
