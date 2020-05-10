@@ -1,0 +1,128 @@
+[root@iTOP-4412]# [   64.640434] failed to copy MFC F/W during init
+
+[root@iTOP-4412]# echo ttyS2 > /sys/module/kgdboc/parameters/kgdboc 
+[  186.466757] kgdb: Registered I/O driver kgdboc.
+[root@iTOP-4412]# echo g > /proc/sysrq-trigger
+[  188.094503] SysRq : DEBUG
+[  294.036136] Unable to handle kernel NULL pointer dereference at virtual
+address 00000000
+[  294.042817] pgd = d49bc000
+[  294.045507] [00000000] *pgd=567d0831, *pte=00000000, *ppte=00000000
+[  294.051766] Internal error: Oops: 80000007 [#1] PREEMPT SMP
+[  294.057429] KGDB: re-enter exception: ALL breakpoints killed
+[  294.068594] ---[ end trace c20145c35c265507 ]---
+[  294.072010] note: sh[979] exited with preempt_count 5
+[  294.077146] BUG: scheduling while atomic: sh/979/0x40000006
+[  294.082441] Modules linked in:
+[  294.085405] Backtrace: 
+[  294.087901] [<c0063718>] (dump_backtrace+0x0/0x114) from [<c053c2dc>]
+(dump_stack+0x20/0x24)
+[  294.096336]  r6:d4914000 r5:d60cfa80 r4:00000000 r3:20000153
+[  294.101945] [<c053c2bc>] (dump_stack+0x0/0x24) from [<c008aaf8>]
+(__schedule_bug+0x68/0x78)
+[  294.110348] [<c008aa90>] (__schedule_bug+0x0/0x78) from [<c053c9ec>]
+(__schedule+0x70/0x640)
+[  294.118724]  r4:c1321500 r3:00000000
+[  294.122249] [<c053c97c>] (__schedule+0x0/0x640) from [<c008eea4>]
+(__cond_resched+0x20/0x2c)
+[  294.130737] [<c008ee84>] (__cond_resched+0x0/0x2c) from [<c053d064>]
+(_cond_resched+0x3c/0x4c
+)
+[  294.139517] [<c053d028>] (_cond_resched+0x0/0x4c) from [<c0126350>]
+(unmap_vmas+0x538/0x5f0)
+[  294.147760] [<c0125e18>] (unmap_vmas+0x0/0x5f0) from [<c0128998>]
+(exit_mmap+0x140/0x250)
+[  294.155915] [<c0128858>] (exit_mmap+0x0/0x250) from [<c0092494>]
+(mmput+0x44/0xc4)
+[  294.163422]  r7:d66d989c r6:d60cfd0c r5:00000000 r4:d66d9860
+[  294.169033] [<c0092450>] (mmput+0x0/0xc4) from [<c0096e54>]
+(exit_mm+0x160/0x16c)
+[  294.176540]  r5:d60cfa80 r4:d66d9860
+[  294.180051] [<c0096cf4>] (exit_mm+0x0/0x16c) from [<c009861c>]
+(do_exit+0x22c/0x6d8)
+[  294.187818]  r7:d6197300 r6:d66d9860 r5:00000009 r4:d60cfa80
+[  294.193432] [<c00983f0>] (do_exit+0x0/0x6d8) from [<c0068070>]
+(__do_kernel_fault+0x84/0x94)
+[  294.202100] [<c0067fec>] (__do_kernel_fault+0x0/0x94) from [<c0068248>]
+(do_page_fault+0x1c8/
+0x1e0)
+[  294.210913]  r8:0000002b r7:d66d9860 r6:d4915bb0 r5:d60cfa80 r4:00000000
+[  294.217344] r3:d4915bb0
+[  294.219995] [<c0068080>] (do_page_fault+0x0/0x1e0) from [<c00591c4>]
+(do_PrefetchAbort+0x44/0
+xa8)
+[  294.229064] [<c0059180>] (do_PrefetchAbort+0x0/0xa8) from [<c005f070>]
+(__pabt_svc+0x50/0xa0)
+[  294.237391] Exception stack(0xd4915bb0 to 0xd4915bf8)
+[  294.242426] 5ba0:                                     c0a082b4 00000001
+0000000a c08c742c
+[  294.250595] 5bc0: c0a082b4 0000000a 0000002c 00000000 0000002b 00000020
+c0963299 d4915c14
+[  294.258746] 5be0: d4915c18 d4915bf8 c025a514 00000000 a00000d3 ffffffff
+[  294.265499]  r7:00000000 r6:0000002c r5:d4915be4 r4:ffffffff
+[  294.270962] [<c025a4ec>] (serial8250_put_poll_char+0x0/0xbc) from
+[<c02566fc>] (uart_poll_put
+_char+0x48/0x4c)
+[  294.280868]  r6:0000002c r5:0000002c r4:c08c78b4 r3:c08c742c
+[  294.286477] [<c02566b4>] (uart_poll_put_char+0x0/0x4c) from [<c025e674>]
+(kgdboc_put_char+0x3
+c/0x44)
+[  294.295825] [<c025e638>] (kgdboc_put_char+0x0/0x44) from [<c00dd01c>]
+(vkdb_printf+0x33c/0x74
+0)
+[  294.304341] [<c00dcce0>] (vkdb_printf+0x0/0x740) from [<c00dd450>]
+(kdb_printf+0x30/0x38)
+[  294.312500] [<c00dd420>] (kdb_printf+0x0/0x38) from [<c00e1624>]
+(kdb_main_loop+0x100/0x738)
+[  294.320881]  r3:c096359c r2:000003d3 r1:d60cfa80 r0:c08196a8
+[  294.326497] [<c00e1524>] (kdb_main_loop+0x0/0x738) from [<c00e3efc>]
+(kdb_stub+0x28c/0x434)
+[  294.334895] [<c00e3c70>] (kdb_stub+0x0/0x434) from [<c00db224>]
+(kgdb_cpu_enter+0x40c/0x604)
+[  294.343277]  r8:00000001 r7:d4914000 r6:600000d3 r5:00000000 r4:d4915d7c
+[  294.349924] [<c00dae18>] (kgdb_cpu_enter+0x0/0x604) from [<c00db5cc>]
+(kgdb_handle_exception+
+0x12c/0x154)
+[  294.359719] [<c00db4a0>] (kgdb_handle_exception+0x0/0x154) from [<c0066710>]
+(kgdb_compiled_b
+rk_fn+0x34/0x40)
+[  294.369411]  r7:c00666dc r6:e7ffdeff r5:c00da5b8 r4:d4915e78
+[  294.375014] [<c00666dc>] (kgdb_compiled_brk_fn+0x0/0x40) from [<c00590dc>]
+(do_undefinstr+0xd
+c/0x180)
+[  294.384285] [<c0059000>] (do_undefinstr+0x0/0x180) from [<c005f004>]
+(__und_svc+0x44/0x60)
+[  294.392660] Exception stack(0xd4915e78 to 0xd4915ec0)
+[  294.397536] 5e60:
+00000001 200000d3
+[  294.405709] 5e80: d4915e98 00000000 c08bcfd4 00000007 00000067 60000053
+00000000 d4914000
+[  294.413865] 5ea0: d4915f78 d4915ecc d4915e98 d4915ec0 c053f210 c00da5b8
+600000d3 ffffffff
+[  294.422155]  r7:00000000 r6:c005f394 r5:d4915eac r4:ffffffff
+[  294.427614] [<c00da570>] (kgdb_breakpoint+0x0/0x8c) from [<c00da6b8>]
+(sysrq_handle_dbg+0x58/
+0x6c)
+[  294.436626] [<c00da660>] (sysrq_handle_dbg+0x0/0x6c) from [<c02560a4>]
+(__handle_sysrq+0xb4/0
+x160)
+[  294.445561] [<c0255ff0>] (__handle_sysrq+0x0/0x160) from [<c0256188>]
+(write_sysrq_trigger+0x
+38/0x40)
+[  294.454885]  r8:00000002 r7:000f0528 r6:d60e10a0 r5:c0256150 r4:00000002
+[  294.461167] r3:d4915f78
+[  294.463810] [<c0256150>] (write_sysrq_trigger+0x0/0x40) from [<c017d750>]
+(proc_reg_write+0x9
+0/0xa4)
+[  294.472957]  r4:d62bec80 r3:d4915f78
+[  294.476488] [<c017d6c0>] (proc_reg_write+0x0/0xa4) from [<c013a444>]
+(vfs_write+0xc0/0x14c)
+[  294.485039] [<c013a384>] (vfs_write+0x0/0x14c) from [<c013a5a4>]
+(sys_write+0x4c/0x78)
+[  294.492752]  r8:c005f6e8 r7:00000000 r6:00000000 r5:000f0528 r4:d60e10a0
+[  294.499403] [<c013a558>] (sys_write+0x0/0x78) from [<c005f480>]
+(ret_fast_syscall+0x0/0x30)
+[  294.507762]  r7:00000004 r6:400fe4d0 r5:000f0528 r4:00000002
+
+Please press Enter to activate this console. 
+

@@ -1,0 +1,82 @@
+GNU gdb (Sourcery CodeBench Lite 2014.05-29) 7.7.50.20140217-cvs
+Copyright (C) 2014 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-pc-linux-gnu --target=arm-none-linux-gnueabi".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://sourcery.mentor.com/GNUToolchain/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from /home/zhangly/Arm/topeet/iTop4412_Kernel_3.0/vmlinux...done.
+(gdb) set serial s baud w 115200
+(gdb) s target tr  remote locaho  lhost:1 2331
+Remote debugging using localhost:2331
+cpu_v7_do_idle () at arch/arm/mm/proc-v7.S:86
+86		mov	pc, lr
+(gdb) break uart_poll_put_char 
+Breakpoint 1 at 0xc02566c8: file drivers/tty/serial/serial_core.c, line 2193.
+(gdb) c
+Continuing.
+
+Breakpoint 1, uart_poll_put_char (driver=0xd64ffd80, line=2, ch=10 '\n')
+    at drivers/tty/serial/serial_core.c:2193
+2193		struct uart_state *state = drv->state + line;
+(gdb) where
+#0  uart_poll_put_char (driver=0xd64ffd80, line=2, ch=10 '\n')
+    at drivers/tty/serial/serial_core.c:2193
+#1  0xc025e674 in kgdboc_put_char (chr=10 '\n') at drivers/tty/serial/kgdboc.c:233
+#2  0xc00dd01c in vkdb_printf (fmt=<optimized out>, ap=...) at kernel/debug/kdb/kdb_io.c:682
+#3  0xc00dd450 in kdb_printf (
+    fmt=0xc08196a8 <kallsyms_token_index+58616> "\nEntering kdb (current=0x%p, pid %d) ")
+    at kernel/debug/kdb/kdb_io.c:821
+#4  0xc00e1624 in kdb_local (db_result=<optimized out>, regs=<optimized out>, error=<optimized out>, 
+    reason=<optimized out>) at kernel/debug/kdb/kdb_main.c:1129
+#5  kdb_main_loop (reason=KDB_REASON_ENTER, reason2=KDB_REASON_KEYBOARD, error=<optimized out>, 
+    db_result=KDB_DB_NOBPT, regs=0xd4915e78) at kernel/debug/kdb/kdb_main.c:1371
+#6  0xc00e3efc in kdb_stub (ks=0xd4915d7c) at kernel/debug/kdb/kdb_debugger.c:113
+#7  0xc00db224 in kgdb_cpu_enter (ks=0xd4915d7c, regs=0xd4915e78, exception_state=<optimized out>)
+    at kernel/debug/debug_core.c:607
+#8  0xc00db5cc in kgdb_handle_exception (evector=<optimized out>, signo=<optimized out>, 
+    ecode=<optimized out>, regs=0xd4915e78) at kernel/debug/debug_core.c:690
+#9  0xc0066710 in kgdb_compiled_brk_fn (regs=0xc096359c <kdb_base_commands>, instr=<optimized out>)
+    at arch/arm/kernel/kgdb.c:155
+#10 0xc00590dc in call_undef_hook (instr=<optimized out>, regs=<optimized out>)
+    at arch/arm/kernel/traps.c:338
+#11 do_undefinstr (regs=0xd4915e78) at arch/arm/kernel/traps.c:365
+#12 0xc005f004 in __und_svc () at arch/arm/kernel/entry-armv.S:275
+Backtrace stopped: frame did not save the PC
+(gdb) prit      print       list
+2188	}
+2189	
+2190	static void uart_poll_put_char(struct tty_driver *driver, int line, char ch)
+2191	{
+2192		struct uart_driver *drv = driver->driver_state;
+2193		struct uart_state *state = drv->state + line;
+2194		struct uart_port *port;
+2195	
+2196		if (!state || !state->uart_port)
+2197			return;
+(gdb) list
+2198	
+2199		port = state->uart_port;
+2200		port->ops->poll_put_char(port, ch);
+2201	}
+2202	#endif
+2203	
+2204	static const struct tty_operations uart_ops = {
+2205		.open		= uart_open,
+2206		.close		= uart_close,
+2207		.write		= uart_write,
+(gdb) n
+2196		if (!state || !state->uart_port)
+(gdb) prit    print port->ops->poll_put_char
+value has been optimized out
+(gdb) call port->ops->poll_put_char( (port, ch)
+value has been optimized out
+(gdb) c
+Continuing.
