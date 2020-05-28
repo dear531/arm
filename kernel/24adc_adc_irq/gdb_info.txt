@@ -1,0 +1,15 @@
+add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/24adc_adc_irq/cdev_adc.ko 0xbf000000 -s .bss 0xbf000568 -s .data 0xbf0003d4 -s .symtab 0xbf0021a4
+#!/bin/bash
+array0=".text"
+array1=".bss"
+array2=".data"
+array3=".symtab"
+
+path="/sys/module/cdev_adc/sections/"
+
+a1=`cat "$path/$array0"`
+a2=`cat "$path/$array1"`
+a3=`cat "$path/$array2"`
+a4=`cat "$path/$array3"`
+
+echo "add-symbol-file /home/zhangly/Arm/myroot/root/arm/kernel/24adc_adc_irq/cdev_adc.ko $a1 -s .bss $a2 -s .data $a3 -s .symtab $a4"
