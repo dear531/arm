@@ -5,3 +5,12 @@
 	3.多核cpu，
 
 	注意：1.自死锁 2.ABBA死锁 3.不能锁不能睡眠 4.在程序或函数返回之前要解锁
+	include/linux/spinlock.h
+读写锁：
+信号量：
+	include/linux/semaphore.h
+	加锁不成功会睡眠等待
+互斥量：
+完成量：
+	include/linux/completion.h
+seq锁：
