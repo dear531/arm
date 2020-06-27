@@ -122,7 +122,7 @@ ssize_t my_write(struct file *fp, const char __user *buff, size_t count, loff_t 
 		ret = -EFAULT;
 #if 0
 		spin_unlock_irqrestore(&mydev->lock, flags);
-#else
+#elif
 		up(&m->sem);
 #endif
 		goto copy_from_user_error;
