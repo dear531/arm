@@ -11,6 +11,7 @@
 	include/linux/semaphore.h
 	加锁不成功会睡眠等待
 互斥量：
+	include/linux/mutex.h
 完成量：
 	include/linux/completion.h
 seq锁：
