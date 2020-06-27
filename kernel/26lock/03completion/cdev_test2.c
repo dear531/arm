@@ -92,7 +92,7 @@ ssize_t my_read(struct file *fp, char __user *buff, size_t count, loff_t *off)
 	spin_unlock_irqrestore(&mydev->lock, flags);
 #elif 0
 	spin_unlock(&mydev->lock);
-#else
+#elif 0
 	up(&m->sem);
 #endif
 
