@@ -15,3 +15,4 @@
 完成量：
 	include/linux/completion.h
 seq锁：
+	基于自旋锁，写者优先
