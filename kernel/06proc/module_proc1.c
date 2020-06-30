@@ -68,7 +68,7 @@ ssize_t  dir_write(struct file *seq, const char __user *data, size_t len, loff_t
 	}
 	/* 将直接申请好的结构体后续跟着的coutent内容赋值给content结构体指针 */
 	pdata->content = (char *)(pdata + 1);
-	n = copy_from_user(pdata->content, data1, len);
+	n = copy_from_user(pdata->content, data, len);
 	if (0 > n) {
 		ret = -EFAULT;
 		goto Ecopy;
@@ -86,7 +86,6 @@ Ecopy:
 	pdata = NULL;
 Ekalloc:
 	return ret;
-#endif
 }
 
 static int dir_devices_proc_open(struct inode *inode, struct file *file)
