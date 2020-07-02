@@ -6,13 +6,24 @@
 
 struct timer_list timer;
 
-void timer_func(unsigned long data)
+void timer_handler(unsigned long data)
 {
 	if (in_interrupt()) {
 		printk("interrupt\n");
 	} else {
 		printk("process\n");
 	}
+	/* reset timer */
+#if 0
+	timer.expires = jiffies + HZ * 2;
+	add_timer(&timer);
+#else
+# if 0
+int mod_timer(struct timer_list *timer, unsigned long expires)
+# endif
+	mod_timer(&timer, jiffies + HZ * 2);
+#endif
+
 	return;
 }
 
@@ -20,10 +31,17 @@ void timer_func(unsigned long data)
 static __init int module_test1_init(void)
 {
 	printk("%s:%d\n", __func__, __LINE__);
+#if 0
 	init_timer(&timer);
-	timer.expires = jiffies + HZ * 2;
-	timer.function = timer_func;
+	timer.function = timer_handler;
 	timer.data = 123;
+#else
+#if 0
+#define setup_timer(timer, fn, data)
+#endif
+	setup_timer(&timer, timer_handler, 456);
+#endif
+	timer.expires = jiffies + HZ * 2;
 	add_timer(&timer);
 	return 0;
 }
@@ -31,6 +49,7 @@ static __init int module_test1_init(void)
 /* when uninstall then perfrom */
 static __exit void module_test1_exit(void)
 {
+	del_timer_sync(&timer);
 	printk("%s:%d\n", __func__, __LINE__);
 }
 
