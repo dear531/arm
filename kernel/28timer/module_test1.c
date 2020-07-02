@@ -41,8 +41,12 @@ static __init int module_test1_init(void)
 #endif
 	setup_timer(&timer, timer_handler, 456);
 #endif
+#if 0
 	timer.expires = jiffies + HZ * 2;
 	add_timer(&timer);
+#else
+	mod_timer(&timer, jiffies + HZ * 2);
+#endif
 	return 0;
 }
 
