@@ -25,3 +25,4 @@ kset_find_obj_hinted
 /home/zhangly/Arm/topeet/iTop4412_Kernel_3.0/lib/kobject.c:787
 
 如果word文件无法在linux打开，就复制到windows系统下打开察看内容。
+
