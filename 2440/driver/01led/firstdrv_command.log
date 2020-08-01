@@ -1,0 +1,29 @@
+# cat /proc/devices |grep first
+252 first_drv
+# cat /sys/class/first_drv_class/first_dev_file*/dev
+252:0
+252:1
+252:2
+252:3
+# ls /dev/first_dev_file* -l
+crw-rw----    1 0        0        252,   0 Jan  1 12:45 /dev/first_dev_file0
+crw-rw----    1 0        0        252,   1 Jan  1 12:45 /dev/first_dev_file1
+crw-rw----    1 0        0        252,   2 Jan  1 12:45 /dev/first_dev_file2
+crw-rw----    1 0        0        252,   3 Jan  1 12:45 /dev/first_dev_file3
+# ./open_write on /dev/first_dev_file1
+first_open:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:26
+first_write:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:35
+first_write:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:41:n:1,minor:1
+# ./open_write off /dev/first_dev_file0
+first_open:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:26
+first_write:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:35
+first_write:/home/wds2440/Arm/arm/2440/driver/01led/first_drv.c:41:n:0,minor:0
+
+
+cat /proc/devices |grep first
+cat /sys/class/first_drv_class/first_dev_file*/dev
+ls /dev/first_dev_file* -l
+./open_write on /dev/first_dev_file1
+./open_write off /dev/first_dev_file0
+
+
