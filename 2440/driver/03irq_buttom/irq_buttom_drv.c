@@ -31,7 +31,13 @@ GPG11
 #endif
 ssize_t buttom_read(struct file *fp, char __user * buff, size_t count, loff_t * off)
 {
-	wait_event_interruptible(wq, ev_press);
+	/* 暂时不考虑非阻塞情况 */
+	int ret;
+	ret = wait_event_interruptible(wq, ev_press);
+	if (ret) {
+		printk("wait_event_interruptible interrupt\n");
+		return -EINTR;
+	}
 	if (copy_to_user(buff, &key_val, sizeof(key_val))) {
 		printk("copy_to_user error\n");
 		return -EFAULT;
