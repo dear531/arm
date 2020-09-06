@@ -1,7 +1,7 @@
 LINUX_SRC	:=/home/wds2440/Arm/source/linux-2.6.22.6/
 
-obj-m += atomic_button_drv.o
-module-objs = atomic_button_drv.o
+obj-m += atomic_button_drv.o semaphore_button_drv.o
+module-objs = atomic_button_drv.o semaphore_button_drv.o
 app	:=multiprocess_read
 
 #obj-m += module1.o

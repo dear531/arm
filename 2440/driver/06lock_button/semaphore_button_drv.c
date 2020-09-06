@@ -31,7 +31,7 @@ struct button_st {
 	struct class_device *btn_cls_dev;
 	struct pin_desc pins_desc[4];
 	struct fasync_struct *fasync_queue;
-	atomic_t t;
+	struct semaphore sem;
 };
 
 static struct button_st *btn;
@@ -69,17 +69,14 @@ int button_open(struct inode *inode, struct file *fp)
 {
 	printk("%s:%s\n", __func__, __FILE__);
 	fp->private_data = btn;
-	if (!atomic_dec_and_test(&btn->t)) {
-		atomic_inc(&btn->t);
-		return -EBUSY;
-	}
+	down(&btn->sem);
 	return 0;
 }
 
 int button_close(struct inode *inode, struct file *fp)
 {
 
-	atomic_inc(&btn->t);
+	up(&btn->sem);
 	return 0;
 }
 
@@ -101,7 +98,7 @@ static int button_fasync(int fd, struct file *file, int on)
         return fasync_helper(fd, file, on, &btn->fasync_queue); 
 }
 
-struct file_operations atomic_button_file_st = {
+struct file_operations semaphore_button_file_st = {
 	.owner = THIS_MODULE,
 	.read = button_read,
 	.write = button_write,
@@ -133,7 +130,7 @@ irqreturn_t button_irq(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-static int __init atomic_button_init(void)
+static int __init semaphore_button_init(void)
 {
 	int ret;
 	ret = 0;
@@ -154,13 +151,13 @@ static int __init atomic_button_init(void)
 	btn->pins_desc[3].pin = S3C2410_GPG11;
 	btn->pins_desc[3].key_val = 0x04;
 
-	btn->major = register_chrdev(0, "atomic_button", &atomic_button_file_st);
+	btn->major = register_chrdev(0, "semaphore_button", &semaphore_button_file_st);
 	if (0 > ret) {
 		ret = btn->major;
 		goto register_chrdev_error;
 	}
 	
-	btn->btn_cls = class_create(THIS_MODULE, "atomic_button_class");
+	btn->btn_cls = class_create(THIS_MODULE, "semaphore_button_class");
 	if (IS_ERR(btn->btn_cls)) {
 		ret = PTR_ERR(btn->btn_cls);
 		goto class_create_error;
@@ -173,7 +170,7 @@ struct class_device *class_device_create(struct class *cls,
 					 const char *fmt, ...)
 #endif
 	btn->btn_cls_dev = class_device_create(btn->btn_cls,
-			NULL, MKDEV(btn->major, 0), NULL, "atomic_class_dev");
+			NULL, MKDEV(btn->major, 0), NULL, "semaphore_button_dev");
 
 	if (IS_ERR(btn->btn_cls_dev)) {
 		ret = PTR_ERR(btn->btn_cls_dev);
@@ -211,7 +208,7 @@ struct class_device *class_device_create(struct class *cls,
 		goto request_irq_IRQ_EINT19_error; 
 	}
 	init_waitqueue_head(&btn->wq);
-	atomic_set(&btn->t, 1);
+	sema_init(&btn->sem, 1);
 
 	return 0;
 
@@ -231,7 +228,7 @@ ioremap_cpf_v_error:
 class_device_create_error:
 	class_destroy(btn->btn_cls);
 class_create_error:
-	unregister_chrdev(btn->major, "atomic_button");
+	unregister_chrdev(btn->major, "semaphore_button");
 register_chrdev_error:
 	kfree(btn);
 	btn = NULL;
@@ -239,7 +236,7 @@ kzalloc_error:
 	return ret;
 }
 
-static void __exit atomic_button_exit(void)
+static void __exit semaphore_button_exit(void)
 {
 	free_irq(IRQ_EINT0, btn->pins_desc + 0);
 	free_irq(IRQ_EINT2, btn->pins_desc + 1);
@@ -249,11 +246,11 @@ static void __exit atomic_button_exit(void)
 	iounmap(btn->cpf_v);
 	class_device_destroy(btn->btn_cls, MKDEV(btn->major, 0));
 	class_destroy(btn->btn_cls);
-	unregister_chrdev(btn->major, "atomic_button");
+	unregister_chrdev(btn->major, "semaphore_button");
 	return;
 }
 
-module_init(atomic_button_init);
-module_exit(atomic_button_exit);
+module_init(semaphore_button_init);
+module_exit(semaphore_button_exit);
 
 MODULE_LICENSE("GPL");
