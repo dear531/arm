@@ -47,8 +47,9 @@ ssize_t button_read(struct file *fp, char __user * buff, size_t count, loff_t * 
 {
 	/* 暂时不考虑非阻塞情况 */
 	int ret;
-	if ((fp->f_flags & O_NONBLOCK) && 0 == btn->ev_press) {
-		return -EAGAIN;
+	if ((fp->f_flags & O_NONBLOCK)) {
+		if (0 == btn->ev_press)
+			return -EAGAIN;
 	} else {
 		ret = wait_event_interruptible(btn->wq, btn->ev_press);
 		if (ret) {
