@@ -1,0 +1,12 @@
+input = kzalloc(sizeof(*input), GFP_KERNEL);
+input->button_dev = input_allocate_device();
+set_bit(EV_KEY, input->button_dev->evbit);
+set_bit(EV_REP, input->button_dev->evbit);
+set_bit(KEY_L, input->button_dev->keybit);
+set_bit(KEY_S, input->button_dev->keybit);
+set_bit(KEY_LEFTSHIFT, input->button_dev->keybit);
+set_bit(KEY_ENTER, input->button_dev->keybit);
+ret = input_register_device(input->button_dev);
+init_timer(&input->timer);
+add_timer(&input->timer);
+ret = request_irq(input->pins_desc[i].irq, irq_button_handler,
