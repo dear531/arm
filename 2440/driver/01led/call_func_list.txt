@@ -1,0 +1,16 @@
+             major = register_chrdev(0, "first_drv", &first_drv_fops);
+             firstdrv_class = class_create(THIS_MODULE, "first_drv_class");
+             if (IS_ERR(firstdrv_class)) {
+             ret = PTR_ERR(firstdrv_class);
+             firstdrv_class_devs[minor] = class_device_create(firstdrv_class, NULL,
+             MKDEV(major, minor), NULL, "first_dev_file%d", minor);
+             firstdrv_st = kzalloc(sizeof(*firstdrv_st), GFP_KERNEL);
+             firstdrv_st->v = ioremap(GPFCON, 0x10);
+             firstdrv_st->gpfcon = ioread32(firstdrv_st->v);
+             iowrite32(firstdrv_st->gpfcon, firstdrv_st->v);
+             iounmap(firstdrv_st->v);
+             kfree(firstdrv_st);
+             class_device_destroy(firstdrv_class, MKDEV(major, minor));
+             class_device_destroy(firstdrv_class, MKDEV(major, minor));
+             class_destroy(firstdrv_class);
+             unregister_chrdev(major, "first_drv");
